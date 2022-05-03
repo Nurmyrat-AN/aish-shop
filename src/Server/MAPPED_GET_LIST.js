@@ -41,7 +41,7 @@ class MAPPED_GET_LIST {
             const sql = `from products LEFT OUTER JOIN datas on products.uid=datas.id LEFT OUTER JOIN currencies ON datas.currency=currencies.id
                 WHERE 
                 ${this.params.category ? `category=${this.params.category}` : '1=1'}
-                ${this.params.ids ? `AND products.id IN (${this.params.ids.reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : '1=1'}
+                ${this.params.ids ? `AND products.id IN (${this.params.ids.reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
                 ${(this.params.categories || []).length > 0 ? `AND category IN (${(await this.getCategoriesID(this.params.categories)).reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
                 ${this.params.brand ? `AND brand=${this.params.brand}` : ''} 
                 ${(this.params.brands || []).length > 0 ? `AND brand IN (${this.params.brands.reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
