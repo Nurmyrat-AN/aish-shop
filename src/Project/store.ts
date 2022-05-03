@@ -10,7 +10,7 @@ import { DataReducer } from "./DataReducer";
 import { DialogsReducer } from "./DialogsReducer";
 import { LanguageReducer } from "./LanguageReducer";
 
-export const URL_API = 'http://localhost:3131'
+export const URL_API = 'http://api.atom.com.tm'
 
 export const getRequestApi = () => new RequestApi()
 
