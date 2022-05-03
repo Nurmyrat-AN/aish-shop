@@ -13,7 +13,7 @@ class MAPPED_GET_LIST {
 
     mapped_data = {
         categories: async () => ({
-            categories: this.sepearateList(await this.UTILS.queryAsync(`SELECT *, COALESCE((SELECT json_arrayagg( brand_id ) FROM category_brand WHERE category_brand.category_id=categories.id), '[]') FROM categories WHERE 
+            categories: this.sepearateList(await this.UTILS.queryAsync(`SELECT *, COALESCE((SELECT json_arrayagg( brand_id ) FROM category_brand WHERE category_brand.category_id=categories.id), '[]') as brands FROM categories WHERE 
                                         ${this.params.id !== undefined ? `parent=${this.params.id}` : '1=1'} AND 
                                         ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`))
         }),
