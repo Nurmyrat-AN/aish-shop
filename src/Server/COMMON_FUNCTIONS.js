@@ -43,7 +43,7 @@ const STRINGIFYER = dataReceive => {
     const data = REMOVE_IMAGE_HOST(dataReceive)
     try {
         Object.keys(data).forEach(key => {
-            if (typeof data[key] === 'object') {
+            if (isObject(data[key])) {
                 try {
                     data[key] = JSON.stringify(data[key])
                 } catch (e) {
