@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
 app.post(['/:action/:data', '/:action/:data/:id'], async (req, res) => {
     try {
         let params = await UTILS.getRequestData(req)
+        console.log(params)
         const { action, data } = req.params
         if (action === 'insert' || action === 'update') params = await RecursivelyCheckImages(params)
         const mapProps = { UTILS, params, SEPERATOR, STRINGIFYER, id: req.params.id }
