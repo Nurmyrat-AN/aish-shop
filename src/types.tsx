@@ -110,8 +110,8 @@ export const emptyProduct: ProductType = {
     name: '',
     topar: [],
     key_words: [],
-    brand: null,
-    category: null,
+    brand: 0,
+    category: 0,
     tertip: 0
 }
 

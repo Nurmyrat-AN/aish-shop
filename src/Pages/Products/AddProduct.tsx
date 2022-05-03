@@ -26,7 +26,7 @@ const AddProduct: React.FC<Props> = (props) => {
         let timer: NodeJS.Timeout | null = null
         timer = setTimeout(async () => {
             if (props.id === null) {
-                setState(emptyProduct)
+                setState({ ...emptyProduct, category: props.parent })
                 setStateLoading({ loading: false, fail: false })
             } else {
                 try {
