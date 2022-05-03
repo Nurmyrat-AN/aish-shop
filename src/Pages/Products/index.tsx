@@ -66,9 +66,9 @@ const Products = () => {
                     open={Boolean(anchorEl)}
                     anchorEl={anchorEl}
                 >
-                    <MenuItem onClick={() => handleAdd(EditDialogTypes.category, currentCategory)}>Kategoriýa</MenuItem>
-                    <MenuItem onClick={() => handleAdd(EditDialogTypes.brand, currentCategory)}>Brend</MenuItem>
-                    <MenuItem onClick={() => handleAdd(EditDialogTypes.product, currentCategory)}>Haryt</MenuItem>
+                    <MenuItem onClick={() => handleAdd(EditDialogTypes.category, null)}>Kategoriýa</MenuItem>
+                    <MenuItem onClick={() => handleAdd(EditDialogTypes.brand, null)}>Brend</MenuItem>
+                    <MenuItem onClick={() => handleAdd(EditDialogTypes.product, null)}>Haryt</MenuItem>
                 </Menu>
             </div>
             <Divider />
@@ -126,7 +126,7 @@ const Categories: React.FC<{ currentCategory: number, setCurrentCategory: (id: n
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [props.currentCategory, retry, props.retry])
+    }, [props.currentCategory, retry, props.retry, dispatch])
     return (
         <Tabs value={0} variant='scrollable'>
             <Tab label='Ählisi' />
@@ -172,7 +172,7 @@ const Brands: React.FC<{ currentCategory: number, setCurrentBrand: (id: number |
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [props.currentCategory, retry, props.retry])
+    }, [props.currentCategory, retry, props.retry, dispatch])
     return (
         <Tabs value={0} variant='scrollable'>
             <Tab label='Ählisi' />
@@ -221,7 +221,7 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [props.currentCategory, retry, props.retry, props.currentBrand, props.search, page])
+    }, [props.currentCategory, retry, props.retry, props.currentBrand, props.search, page, dispatch])
 
     React.useEffect(() => setPage(0), [props.currentCategory, props.search, props.currentBrand])
 

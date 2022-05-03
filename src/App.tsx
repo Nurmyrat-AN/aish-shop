@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from './Components/Header';
-import { getRequestApi } from './Project/store';
 const Products = React.lazy(() => import('./Pages/Products'))
 const Groups = React.lazy(() => import('./Pages/Groups'))
 const Currencies = React.lazy(() => import('./Pages/Currencies'))

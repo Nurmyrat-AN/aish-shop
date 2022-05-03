@@ -6,7 +6,7 @@ import { ServerData } from '../../Containers/ServerData'
 import { getRequestApi, useAppSelector } from '../../Project/store'
 import CustomImagePicker from '../../PureComponents/CustomImagePicker'
 import { MultiLanguageTextField } from '../../PureComponents/MultiLanguageTextField'
-import { emptyCategory, emptyProduct, ProductDataType, ProductType, StateLoadingType } from '../../types'
+import { emptyProduct, ProductDataType, ProductType, StateLoadingType } from '../../types'
 
 type Props = {
     id: number | string | null
@@ -42,13 +42,14 @@ const AddProduct: React.FC<Props> = (props) => {
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [props.id, retry])
+    }, [props.id, retry, props.parent])
 
     const handleSave = async () => {
         if (!state.name) return;
         try {
             const { data, ...rest } = state
             const showProgress = true
+            debugger
             if (props.id) {
                 await getRequestApi().update({ path: 'product', id: props.id, data: rest, showProgress })
             } else {

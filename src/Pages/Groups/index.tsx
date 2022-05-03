@@ -35,7 +35,7 @@ const Groups = () => {
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [search, retry])
+    }, [search, retry, dispatch])
 
     const handleClose = (refresh?: boolean) => {
         setEditData(null)

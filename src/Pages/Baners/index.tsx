@@ -1,8 +1,8 @@
-import { Autocomplete, Avatar, Button, Card, CardContent, CardMedia, Container, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, List, ListItem, ListItemAvatar, ListItemText, Radio, RadioGroup, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Autocomplete, Avatar, Button, Card, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, List, ListItem, ListItemAvatar, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import React from 'react'
 import { Loading, RetryButton } from '../../Components/Loading'
 import { ServerData } from '../../Containers/ServerData'
-import { ADD_BANERS, ADD_CURRENCIES, CLEAR_LIST } from '../../Project/DataListReducer'
+import { ADD_BANERS, CLEAR_LIST } from '../../Project/DataListReducer'
 import { DialogReducerType } from '../../Project/DialogsReducer'
 import { getRequestApi, useAppDispatch, useAppSelector } from '../../Project/store'
 import ContextMenuWithChildren from '../../PureComponents/ContextMenuWithChildren'
@@ -33,7 +33,7 @@ const Baners = () => {
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [search, retry])
+    }, [search, retry, dispatch])
 
     const handleClose = (refresh?: boolean) => {
         setEditData(null)

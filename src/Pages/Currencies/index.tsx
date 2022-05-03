@@ -1,6 +1,6 @@
 import React from 'react'
-import { CurrencyType, EditDialogTypes, GroupType, StateLoadingType, emptyCurrency } from '../../types'
-import { ADD_CURRENCIES, ADD_GROUPS, CLEAR_LIST } from '../../Project/DataListReducer'
+import { CurrencyType, EditDialogTypes, StateLoadingType, emptyCurrency } from '../../types'
+import { ADD_CURRENCIES, CLEAR_LIST } from '../../Project/DataListReducer'
 import { DialogReducerType } from '../../Project/DialogsReducer'
 import { getRequestApi, useAppDispatch, useAppSelector } from '../../Project/store'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Container, List, Table, TableBody, TableCell, TableHead, TableRow, TextField, ListItem } from '@mui/material'
@@ -31,7 +31,7 @@ const Currencies = () => {
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [search, retry])
+    }, [search, retry, dispatch])
 
     const handleClose = (refresh?: boolean) => {
         setEditData(null)

@@ -12,21 +12,21 @@ type Props = {
 }
 
 export const ServerData: React.FC<Props> = (props) => {
-    const {type, id, dataViaProps, children, ...rest} = props
+    const { type, id, dataViaProps, children, ...rest } = props
     const dispatch = useAppDispatch()
     React.useEffect(() => {
         dispatch(GET_SERVER_DATA({ type: props.type, id: props.id }))
-    }, [props.id, props.type])
+    }, [props.id, props.type, dispatch])
 
     return (
         <>
-            {props.dataViaProps ? <StateData {...props} /> : React.Children.map(props.children, (child) => React.isValidElement(child) ? React.cloneElement(child, {...rest}) : child)}
+            {props.dataViaProps ? <StateData {...props} /> : React.Children.map(props.children, (child) => React.isValidElement(child) ? React.cloneElement(child, { ...rest }) : child)}
         </>
     )
 }
 
 const StateData: React.FC<Props> = (props) => {
-    const {type, id, dataViaProps, children, ...rest} = props
+    const { type, id, dataViaProps, children, ...rest } = props
     const data = useAppSelector(state => state.DATA[props.type][props.id])
     return (
         <>

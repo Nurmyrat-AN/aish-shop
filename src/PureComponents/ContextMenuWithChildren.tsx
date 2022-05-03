@@ -7,7 +7,6 @@ type Props = {
     [x: string]: any
 }
 
-let oldShadow = ''
 const ContextMenuWithChildren: React.FC<Props> = (props) => {
     const { options, children, ...rest } = props
     const [contextMenu, setContextMenu] = React.useState<any>(null)
