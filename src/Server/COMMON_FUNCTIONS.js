@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid')
 
-const url_IMAGE = 'http://192.168.5.107/atom'
-const root = 'C:/AppServ/www/atom/uploads/'
+const url_IMAGE = 'https://atom.com.tm/atom'
+const root = '/var/www/atom/uploads/'
 
 const SEPERATOR = data => {
     try {
