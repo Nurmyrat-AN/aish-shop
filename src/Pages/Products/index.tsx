@@ -66,9 +66,9 @@ const Products = () => {
                     open={Boolean(anchorEl)}
                     anchorEl={anchorEl}
                 >
-                    <MenuItem onClick={() => handleAdd(EditDialogTypes.category, null)}>Kategoriýa</MenuItem>
-                    <MenuItem onClick={() => handleAdd(EditDialogTypes.brand, null)}>Brend</MenuItem>
-                    <MenuItem onClick={() => handleAdd(EditDialogTypes.product, null)}>Haryt</MenuItem>
+                    <MenuItem onClick={() => handleAdd(EditDialogTypes.category, currentCategory)}>Kategoriýa</MenuItem>
+                    <MenuItem onClick={() => handleAdd(EditDialogTypes.brand, currentCategory)}>Brend</MenuItem>
+                    <MenuItem onClick={() => handleAdd(EditDialogTypes.product, currentCategory)}>Haryt</MenuItem>
                 </Menu>
             </div>
             <Divider />
