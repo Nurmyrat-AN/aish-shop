@@ -16,7 +16,7 @@ type Props = {
 
 const AddProduct: React.FC<Props> = (props) => {
     const brands = useAppSelector(state => state.DATA_LIST.brands)
-    const [state, setState] = React.useState<ProductType>(emptyProduct)
+    const [state, setState] = React.useState<ProductType>({ ...emptyProduct, category: props.parent })
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
     const [retry, setRetry] = React.useState<number>(0)
     const [searchDataCollapsed, setSearchDatasCollapsing] = React.useState<boolean>(false)
