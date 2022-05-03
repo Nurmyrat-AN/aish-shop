@@ -18,15 +18,9 @@ class MAPPED_GET_LIST {
                                         ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`))
         }),
         brands: async () => ({
-            brands: async () => {
-                console.log(`SELECT * FROM brands WHERE 
-                ${this.params.id !== undefined ? `id IN (SELECT brand_id FROM category_brand WHERE category_id IN (${(await this.getCategoriesID(this.params.id)).reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')}))` : '1=1'} AND 
-                ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`)
-                return { brands: [] }
-                // this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM brands WHERE 
-                //                         ${this.params.id !== undefined ? `id IN (SELECT brand_id FROM category_brand WHERE category_id IN (${(await this.getCategoriesID(this.params.id)).reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')}))` : '1=1'} AND 
-                //                         ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`))
-            }
+            brands: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM brands WHERE 
+                                        ${this.params.id !== undefined ? `id IN (SELECT brand_id FROM category_brand WHERE category_id IN (${(await this.getCategoriesID(this.params.id)).reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')}))` : '1=1'} AND 
+                                        ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`))
         }),
         products: async () => {
             const columns = `SELECT products.*, (CASE WHEN datas.id IS NULL THEN null ELSE JSON_OBJECT(
