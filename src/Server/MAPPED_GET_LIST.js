@@ -14,7 +14,7 @@ class MAPPED_GET_LIST {
     mapped_data = {
         categories: async () => ({
             categories: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM categories WHERE 
-                                        ${this.params.id !== undefined ? `parent=${this.params.id}` : '1=1'} AND 
+                                        ${this.params.id !== undefined ? `id IN (${this.getCategoriesID(this.params.id)})` : '1=1'} AND 
                                         ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`))
         }),
         brands: async () => ({
