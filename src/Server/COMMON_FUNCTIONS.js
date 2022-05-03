@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require('uuid')
 const url_IMAGE = 'https://atom.com.tm/atom'
 const root = '/var/www/atom/uploads/'
 
+const isObject = data => typeof data === 'object' && Boolean(data)
+
 const SEPERATOR = data => {
     try {
         Object.keys(data).forEach(key => {
@@ -11,7 +13,7 @@ const SEPERATOR = data => {
                     data[key] = JSON.parse(data[key])
                 } catch (e) {
                 }
-            } else if (typeof data[key] === 'object') data[key] = SEPERATOR(data[key])
+            } else if (isObject(data[key])) data[key] = SEPERATOR(data[key])
         })
         return ADD_IMAGE_HOST(data)
     } catch (e) {
@@ -21,7 +23,7 @@ const SEPERATOR = data => {
 
 const ADD_IMAGE_HOST = data => {
     Object.keys(data || {}).forEach(key => {
-        if (typeof data[key] === 'object') {
+        if (isObject(data[key])) {
             data[key] = ADD_IMAGE_HOST(data[key])
         } else if (typeof data[key] === 'string' && data[key].includes('/uploads/images/')) data[key] = `${url_IMAGE}${data[key]}`
     })
@@ -30,7 +32,7 @@ const ADD_IMAGE_HOST = data => {
 
 const REMOVE_IMAGE_HOST = data => {
     Object.keys(data).forEach(key => {
-        if (typeof data[key] === 'object') {
+        if (isObject(data[key])) {
             data[key] = REMOVE_IMAGE_HOST(data[key])
         } else if (typeof data[key] === 'string' && data[key].includes(url_IMAGE)) data[key] = data[key].slice(url_IMAGE.length)
     })
@@ -58,7 +60,7 @@ const RecursivelyCheckImages = async (data) => {
     const newData = data
     console.log(newData)
     await Promise.all(Object.keys(newData).map(key => new Promise(async (resolve, reject) => {
-        if (typeof newData[key] === 'object') {
+        if (isObject(data[key])) {
             newData[key] = await RecursivelyCheckImages(newData[key])
         } else if (typeof newData[key] === 'string' && newData[key].includes('data:image/')) {
             newData[key] = await SAVE_IMAGE_FILE(newData[key])
