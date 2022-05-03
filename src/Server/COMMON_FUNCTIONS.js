@@ -58,7 +58,6 @@ const STRINGIFYER = dataReceive => {
 
 const RecursivelyCheckImages = async (data) => {
     const newData = data
-    console.log(newData)
     await Promise.all(Object.keys(newData).map(key => new Promise(async (resolve, reject) => {
         if (isObject(data[key])) {
             newData[key] = await RecursivelyCheckImages(newData[key])
