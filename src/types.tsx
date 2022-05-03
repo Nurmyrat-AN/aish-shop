@@ -109,6 +109,7 @@ export const emptyProduct: ProductType = {
     icon: '',
     name: '',
     topar: [],
+    description: '',
     key_words: [],
     brand: 0,
     category: 0,
