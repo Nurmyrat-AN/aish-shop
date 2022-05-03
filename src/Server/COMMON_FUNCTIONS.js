@@ -22,20 +22,20 @@ const SEPERATOR = data => {
 }
 
 const ADD_IMAGE_HOST = data => {
-    Object.keys(data || {}).forEach(key => {
-        if (isObject(data[key])) {
-            data[key] = ADD_IMAGE_HOST(data[key])
-        } else if (typeof data[key] === 'string' && data[key].includes('/uploads/images/')) data[key] = `${url_IMAGE}${data[key]}`
-    })
+    // Object.keys(data || {}).forEach(key => {
+    //     if (isObject(data[key])) {
+    //         data[key] = ADD_IMAGE_HOST(data[key])
+    //     } else if (typeof data[key] === 'string' && data[key].includes('/uploads/images/')) data[key] = `${url_IMAGE}${data[key]}`
+    // })
     return data
 }
 
 const REMOVE_IMAGE_HOST = data => {
-    Object.keys(data).forEach(key => {
-        if (isObject(data[key])) {
-            data[key] = REMOVE_IMAGE_HOST(data[key])
-        } else if (typeof data[key] === 'string' && data[key].includes(url_IMAGE)) data[key] = data[key].slice(url_IMAGE.length)
-    })
+    // Object.keys(data).forEach(key => {
+    //     if (isObject(data[key])) {
+    //         data[key] = REMOVE_IMAGE_HOST(data[key])
+    //     } else if (typeof data[key] === 'string' && data[key].includes(url_IMAGE)) data[key] = data[key].slice(url_IMAGE.length)
+    // })
     return data
 }
 
