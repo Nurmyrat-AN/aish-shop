@@ -47,7 +47,9 @@ export type ProductType = {
     description_lng?: MULTILANGUAGE_VALUE
     category: number | null
     brand: number | null
-    topar: string[]
+    groups_base: string[]
+    groups_for_parent: string[]
+    groups_for_children: string[]
     key_words: string[]
     tertip: number
     data?: ProductDataType
@@ -108,7 +110,9 @@ export const emptyProduct: ProductType = {
     uid: '',
     icon: '',
     name: '',
-    topar: [],
+    groups_base: [],
+    groups_for_parent: [],
+    groups_for_children: [],
     description: '',
     key_words: [],
     brand: 0,

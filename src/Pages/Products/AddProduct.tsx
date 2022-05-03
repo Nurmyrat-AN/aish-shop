@@ -137,9 +137,33 @@ const AddProduct: React.FC<Props> = (props) => {
                             fullWidth
                             multiple
                             size='small'
-                            value={state.topar}
-                            onChange={(e, newValue) => setState(state => ({ ...state, topar: newValue }))}
+                            value={state.groups_base}
+                            onChange={(e, newValue) => setState(state => ({ ...state, groups_base: newValue }))}
                             renderInput={props => <TextField {...props} label='Meňzeş harytlar' />}
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <Autocomplete
+                            options={[] as string[]}
+                            freeSolo
+                            fullWidth
+                            multiple
+                            size='small'
+                            value={state.groups_for_parent}
+                            onChange={(e, newValue) => setState(state => ({ ...state, groups_for_parent: newValue }))}
+                            renderInput={props => <TextField {...props} label='Enesine bagly topar' />}
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <Autocomplete
+                            options={[] as string[]}
+                            freeSolo
+                            fullWidth
+                            multiple
+                            size='small'
+                            value={state.groups_for_children}
+                            onChange={(e, newValue) => setState(state => ({ ...state, groups_for_children: newValue }))}
+                            renderInput={props => <TextField {...props} label='Cagasyna bagly topar' />}
                         />
                     </ListItem>
                     <ListItem>

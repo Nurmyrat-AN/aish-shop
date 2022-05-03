@@ -1,10 +1,12 @@
 import { DICTIONARY_TYPE, TM } from "../Language/TM"
 import { EN } from "../Language/EN"
+import { RU } from "../Language/RU"
 
 
 const languages = {
     TM,
-    EN
+    EN,
+    RU
 }
 
 type languagesType = typeof languages
@@ -33,9 +35,10 @@ export const SET_LANGUAGE: (lng: LanguageType) => actionType = (lng) => ({ type:
 
 
 export const LanguageTitles: { keys: LanguageType[], titles: { [x in LanguageType]: string } } = {
-    keys: ['TM', 'EN'],
+    keys: ['TM', 'EN', 'RU'],
     titles: {
         TM: 'Türkme dili',
-        EN: 'English'
+        EN: 'English',
+        RU: 'Русский язык'
     }
 }
