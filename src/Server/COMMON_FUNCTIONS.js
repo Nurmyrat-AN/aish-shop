@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid')
 const url_IMAGE = 'https://atom.com.tm/atom'
 const root = '/var/www/atom/uploads/'
 
-const isObject = data => typeof data === 'object' && Boolean(data)
+const isObject = data => typeof data === 'object' && data !== null && data !== undefined
 
 const SEPERATOR = data => {
     try {
@@ -46,8 +46,7 @@ const STRINGIFYER = dataReceive => {
             if (isObject(data[key])) {
                 try {
                     data[key] = JSON.stringify(data[key])
-                } catch (e) {
-                }
+                } catch (e) { }
             }
         })
         return data
