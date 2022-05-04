@@ -11,6 +11,7 @@ import { BrandType, CategoryType, EditDialogTypes, ProductType, StateLoadingType
 import AddBrand from './AddBrand'
 import AddCategory from './AddCategory'
 import AddProduct from './AddProduct'
+import CategoryBrandSupport from './CategoryBrandSupport'
 
 const grid_sizes = {
     xs: 6,
@@ -19,8 +20,10 @@ const grid_sizes = {
     xl: 2.4
 }
 
+type HandleCategoryBrandSupport = (type: EditDialogTypes.categoryBrandSupport, data: ({ category: number } | { brand: number })) => void
+
 const Products = () => {
-    const [editData, setEditData] = React.useState<DialogReducerType | null>(null)
+    const [editData, setEditData] = React.useState<DialogReducerType | { type: EditDialogTypes.categoryBrandSupport, data: ({ category: number } | { brand: number }) } | null>(null)
     const [collapse, setCollapse] = React.useState<{ category: boolean, brand: boolean }>({ category: true, brand: true })
     const [currentCategory, setCurrentCategory] = React.useState<number>(0)
     const [currentBrand, setCurrentBrand] = React.useState<number | null>(null)
@@ -39,6 +42,13 @@ const Products = () => {
     const handleClose = (refresh?: boolean) => {
         setEditData(null)
         if (refresh === true) setRetry(retry + 1)
+    }
+
+    const handleCategoryBrandSupport: HandleCategoryBrandSupport = (type, data) => {
+        setEditData({
+            type,
+            data
+        })
     }
 
 
@@ -78,14 +88,14 @@ const Products = () => {
                     <AddCategory onClose={handleClose} parent={currentCategory} id={editData.id} />
                     : editData?.type === EditDialogTypes.brand ?
                         <AddBrand onClose={handleClose} parent={currentCategory} id={editData.id} />
-                        : null}
+                        : editData?.type === EditDialogTypes.categoryBrandSupport ? <CategoryBrandSupport onClose={handleClose} data={editData?.data} /> : null}
             <Button onClick={() => setCollapse(colllapse => ({ ...collapse, category: !collapse.category }))} size='small' color='inherit' startIcon={collapse.category ? <KeyboardArrowDown fontSize='small' /> : <KeyboardArrowRight fontSize='small' />}>Kategoriýalar</Button>
             <Collapse in={collapse.category}>
-                <Categories handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
+                <Categories handleCategoryBrandSupport={handleCategoryBrandSupport} handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
             </Collapse>
             <Button onClick={() => setCollapse(colllapse => ({ ...collapse, brand: !collapse.brand }))} size='small' color='inherit' startIcon={collapse.brand ? <KeyboardArrowDown fontSize='small' /> : <KeyboardArrowRight fontSize='small' />}>Brendler</Button>
             <Collapse in={collapse.brand}>
-                <Brands handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} setCurrentBrand={setCurrentBrand} />
+                <Brands handleCategoryBrandSupport={handleCategoryBrandSupport} handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} setCurrentBrand={setCurrentBrand} />
             </Collapse>
             <Divider />
             <ProductsList handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} currentBrand={currentBrand} search={search} />
@@ -105,7 +115,7 @@ const BrandTitle = (props: { data?: CategoryType, setCurrentBrand: (id: number |
     )
 }
 
-const Categories: React.FC<{ currentCategory: number, setCurrentCategory: (id: number) => void, retry: number, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
+const Categories: React.FC<{ currentCategory: number, handleCategoryBrandSupport: HandleCategoryBrandSupport, setCurrentCategory: (id: number) => void, retry: number, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
     const categories = useAppSelector(state => state.DATA_LIST.categories)
     const dispatch = useAppDispatch()
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
@@ -134,7 +144,10 @@ const Categories: React.FC<{ currentCategory: number, setCurrentCategory: (id: n
                 categories.map(category =>
                     <ContextMenuWithChildren
                         key={category.id}
-                        options={[{ label: 'Üýtget', onClick: () => props.handleAdd(EditDialogTypes.category, category.id) }]}
+                        options={[
+                            { label: 'Üýtget', onClick: () => props.handleAdd(EditDialogTypes.category, category.id) },
+                            { label: 'Brendleri', onClick: () => props.handleCategoryBrandSupport(EditDialogTypes.categoryBrandSupport, { category: category.id || 0 }) },
+                        ]}
                     >
                         <Tab
                             onClick={e => props.setCurrentCategory(category.id || 0)}
@@ -151,7 +164,7 @@ const Categories: React.FC<{ currentCategory: number, setCurrentCategory: (id: n
     )
 }
 
-const Brands: React.FC<{ currentCategory: number, setCurrentBrand: (id: number | null) => void, retry: number, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
+const Brands: React.FC<{ currentCategory: number, handleCategoryBrandSupport: HandleCategoryBrandSupport, setCurrentBrand: (id: number | null) => void, retry: number, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
     const brands = useAppSelector(state => state.DATA_LIST.brands)
     const dispatch = useAppDispatch()
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
@@ -180,7 +193,10 @@ const Brands: React.FC<{ currentCategory: number, setCurrentBrand: (id: number |
                 brands.map(brand =>
                     <ContextMenuWithChildren
                         key={brand.id}
-                        options={[{ label: 'Üýtget', onClick: () => props.handleAdd(EditDialogTypes.brand, brand.id) }]}
+                        options={[
+                            { label: 'Üýtget', onClick: () => props.handleAdd(EditDialogTypes.brand, brand.id) },
+                            { label: 'Kategoriýalary', onClick: () => props.handleCategoryBrandSupport(EditDialogTypes.categoryBrandSupport, { brand: brand.id || 0 }) },
+                        ]}
                     >
                         <Tab
                             onClick={e => props.setCurrentBrand(brand.id)}

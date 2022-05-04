@@ -80,6 +80,7 @@ export enum EditDialogTypes {
     group = 'group',
     currency = 'currency',
     baner = 'baner',
+    categoryBrandSupport = 'categoryBrandSupport'
 }
 
 export type StateLoadingType = {

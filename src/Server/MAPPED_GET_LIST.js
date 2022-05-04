@@ -73,15 +73,14 @@ class MAPPED_GET_LIST {
         currencies: async () => ({
             currencies: await this.UTILS.queryAsync(`SELECT * FROM currencies WHERE id LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY id`)
         }),
+        categoryBrandSupport: async () => ({
+            categoryBrandSupport: await this.UTILS.queryAsync(`SELECT * FROM ${this.params.category ? 'brands' : 'categories'} WHERE id IN (SELECT ${this.params.category ? 'brand_id' : 'category_id'} FROM category_brand WHERE ${this.params.category ? 'category_id' : 'brand_id'}=${this.params.category || this.params.brand})`)
+        }),
         home: async () => {
             const baners = this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM baners ORDER BY tertip, id`))
             const groups = this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM topar ORDER BY tertip, id`))
             const home = []
             const count_between_groups = 5
-            const getTitle = async (table, id) => {
-                const res = await this.UTILS.queryAsync(`SELECT id, name, name_lng, parent FROM ${table} WHERE id='${id}'`)
-                return res[0] || null
-            }
 
             groups.forEach((group, index) => {
                 if (index % count_between_groups === 0) {

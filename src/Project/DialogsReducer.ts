@@ -5,6 +5,7 @@ export type DialogReducerType = {
     type: EditDialogTypes
     id: number | string | null
     uid?: string
+    data?: any
 }
 const initialState: DialogReducerType[] = []
 

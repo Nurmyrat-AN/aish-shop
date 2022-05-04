@@ -1,4 +1,4 @@
-import { SERVER_INSERT_TYPE, SERVER_UPDATE_TYPE } from './../Server/types';
+import { SERVER_INSERT_TYPE, SERVER_UPDATE_TYPE, SERVER_DELETE_TYPE } from './../Server/types';
 import axios from "axios";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { applyMiddleware, combineReducers, compose, createStore, Dispatch } from "redux";
@@ -10,6 +10,7 @@ import { DataReducer } from "./DataReducer";
 import { DialogsReducer } from "./DialogsReducer";
 import { LanguageReducer } from "./LanguageReducer";
 
+// export const URL_API = 'http://localhost:2022'
 export const URL_API = 'https://api.atom.com.tm'
 
 export const getRequestApi = () => new RequestApi()
@@ -21,7 +22,7 @@ const store = createStore(combineReducers({
     DATA_LIST: DataListReducer,
     DATA: DataReducer,
     LANGUAGE: LanguageReducer,
-    global: (state = {}, action) => action.type === 'MAIN/SET_GLOBAL' ? action.payload : state,
+    global: (state: { [x: string]: any } | undefined = {}, action) => action.type === 'MAIN/SET_GLOBAL' ? action.payload : state,
     // ...Reducers
 }), composeEnhancers(applyMiddleware(thunk.withExtraArgument({ getRequestApi }))))
 
@@ -79,6 +80,7 @@ class RequestApi {
     getDataList = (props: { path: SERVER_GET_LIST_TYPE, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/list/${props.path}`, data: props.data, showProgress: props.showProgress })
     insert = (props: { path: SERVER_INSERT_TYPE, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/insert/${props.path}`, data: props.data, showProgress: props.showProgress })
     update = (props: { path: SERVER_UPDATE_TYPE, id: number | string, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/update/${props.path}/${props.id}`, data: props.data, showProgress: props.showProgress })
+    delete = (props: { path: SERVER_DELETE_TYPE, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/delete/${props.path}/0`, data: props.data, showProgress: props.showProgress })
 
 
 }

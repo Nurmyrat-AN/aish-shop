@@ -8,12 +8,16 @@ class MAPPED_DELETE {
     }
 
     deleteData = async (table) => {
-        this.UTILS.queryAsync(`DELETE FROM ${table} WHERE id='${this.id}'`)
+        await this.UTILS.queryAsync(`DELETE FROM ${table} WHERE id='${this.id}'`)
         return { result: { status: 'OK', message: 'Saved Successfully' } }
     }
 
-    mappedData = {
-        address: () => this.deleteData('addresses')
+    mapped_data = {
+        address: () => this.deleteData('addresses'),
+        categoryBrandSupport: async () => {
+            await this.UTILS.queryAsync(`DELETE FROM category_brand WHERE category_id='${this.params.category_id}' AND brand_id='${this.params.brand_id}'`)
+            return { result: { status: 'OK', message: 'Saved Successfully' } }
+        }
     }
 }
 

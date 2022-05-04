@@ -39,7 +39,7 @@ app.post(['/:action/:data', '/:action/:data/:id'], async (req, res) => {
             list: { ...(new MAPPED_GET_LIST(mapProps)).mapped_data },
             insert: { ...(new MAPPED_INSERT(mapProps)).mapped_data },
             update: { ...(new MAPPED_UPDATE(mapProps)).mapped_data },
-            delete: { ...(new MAPPED_DELETE(mapProps)).mappedData }
+            delete: { ...(new MAPPED_DELETE(mapProps)).mapped_data }
         }
         if (routes[action] && routes[action][data]) {
             res.send(await UTILS.zip(await routes[action][data]()))
