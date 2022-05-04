@@ -17,6 +17,7 @@ type Props = {
 const AddProduct: React.FC<Props> = (props) => {
     const brands = useAppSelector(state => state.DATA_LIST.brands)
     const [state, setState] = React.useState<ProductType>({ ...emptyProduct, category: props.parent })
+    const category = useAppSelector(stateApp => stateApp.DATA.category[state.category || 0])
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
     const [retry, setRetry] = React.useState<number>(0)
     const [searchDataCollapsed, setSearchDatasCollapsing] = React.useState<boolean>(false)
@@ -69,7 +70,7 @@ const AddProduct: React.FC<Props> = (props) => {
             open
             maxWidth='md'
             onClose={() => props.onClose()}>
-            <DialogTitle>Haryt</DialogTitle>
+            <DialogTitle><ServerData type='category' id={state.category || 0}>{category.name}</ServerData></DialogTitle>
             <DialogContent style={{ width: 500 }}>
                 {stateLoading.loading ? <Loading /> : stateLoading.fail ? <RetryButton onClick={() => setRetry(retry => retry + 1)} /> : <List>
                     <ListItem>

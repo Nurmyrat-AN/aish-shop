@@ -1,5 +1,5 @@
 import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material'
-import { Avatar, Button, Card, Chip, Collapse, Container, Divider, Grid, InputAdornment, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, Tab, Tabs, TextField, Typography } from '@mui/material'
+import { Avatar, Button, Card, Chip, Collapse, Container, Divider, Grid, InputAdornment, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, Tab, Table, Tabs, TextField, Typography } from '@mui/material'
 import React from 'react'
 import { Loading, RetryButton } from '../../Components/Loading'
 import { ServerData } from '../../Containers/ServerData'
@@ -17,7 +17,7 @@ const grid_sizes = {
     xs: 6,
     sm: 4,
     md: 3,
-    xl: 2.4
+    xl: 3
 }
 
 type HandleCategoryBrandSupport = (type: EditDialogTypes.categoryBrandSupport, data: ({ category: number } | { brand: number })) => void
@@ -91,7 +91,7 @@ const Products = () => {
                         : editData?.type === EditDialogTypes.categoryBrandSupport ? <CategoryBrandSupport onClose={handleClose} data={editData?.data} /> : null}
             <Button onClick={() => setCollapse(colllapse => ({ ...collapse, category: !collapse.category }))} size='small' color='inherit' startIcon={collapse.category ? <KeyboardArrowDown fontSize='small' /> : <KeyboardArrowRight fontSize='small' />}>Kategoriýalar</Button>
             <Collapse in={collapse.category}>
-                <Categories handleCategoryBrandSupport={handleCategoryBrandSupport} handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
+                <Categories globalRetry={() => setRetry(retry => retry + 1)} handleCategoryBrandSupport={handleCategoryBrandSupport} handleAdd={handleAdd} retry={retry} currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
             </Collapse>
             <Button onClick={() => setCollapse(colllapse => ({ ...collapse, brand: !collapse.brand }))} size='small' color='inherit' startIcon={collapse.brand ? <KeyboardArrowDown fontSize='small' /> : <KeyboardArrowRight fontSize='small' />}>Brendler</Button>
             <Collapse in={collapse.brand}>
@@ -115,8 +115,9 @@ const BrandTitle = (props: { data?: CategoryType, setCurrentBrand: (id: number |
     )
 }
 
-const Categories: React.FC<{ currentCategory: number, handleCategoryBrandSupport: HandleCategoryBrandSupport, setCurrentCategory: (id: number) => void, retry: number, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
+const Categories: React.FC<{ currentCategory: number, handleCategoryBrandSupport: HandleCategoryBrandSupport, globalRetry: () => void, setCurrentCategory: (id: number) => void, retry: number, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
     const categories = useAppSelector(state => state.DATA_LIST.categories)
+    const myCurrentCategory = useAppSelector(state => state.DATA.category[props.currentCategory])
     const dispatch = useAppDispatch()
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
     const [retry, setRetry] = React.useState<number>(0)
@@ -137,9 +138,14 @@ const Categories: React.FC<{ currentCategory: number, handleCategoryBrandSupport
             if (timer) clearTimeout(timer)
         }
     }, [props.currentCategory, retry, props.retry, dispatch])
+    const handleChangeCategory = (product: any, category: number | null) => {
+        if (category && product) {
+            getRequestApi().update({ path: 'product', id: product, data: { category: category }, showProgress: true }).then(() => props.globalRetry())
+        }
+    }
     return (
         <Tabs value={0} variant='scrollable'>
-            <Tab label='Ählisi' />
+            <Tab label='Ählisi' onDrop={e => handleChangeCategory(e.dataTransfer.getData("id"), myCurrentCategory?.parent || null)} onDragOver={e => e.preventDefault()} />
             {stateLoading.loading || stateLoading.fail ? stateLoading.loading ? <Loading /> : <span><RetryButton onClick={() => setRetry(retry => retry + 1)} /></span> :
                 categories.map(category =>
                     <ContextMenuWithChildren
@@ -152,7 +158,7 @@ const Categories: React.FC<{ currentCategory: number, handleCategoryBrandSupport
                         <Tab
                             onClick={e => props.setCurrentCategory(category.id || 0)}
                             label={
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div onDrop={e => handleChangeCategory(e.dataTransfer.getData("id"), category.id)} onDragOver={e => e.preventDefault()} style={{ display: 'flex', alignItems: 'center' }}>
                                     <Avatar style={{ height: 24, width: 24 }} src={category.icon} />
                                     <div style={{ width: 10 }} />
                                     <Typography variant='caption' style={{ lineHeight: 1 }}>{category.name}</Typography>
@@ -255,7 +261,10 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
                             item
                             {...grid_sizes}
                         >
-                            <ListItem component={Card} style={{ cursor: 'pointer', height: '100%' }} button>
+                            <ListItem
+                                draggable
+                                onDragStart={(e: any) => e.dataTransfer.setData('id', product.id)}
+                                component={Card} style={{ cursor: 'pointer', height: '100%' }} button>
                                 <ListItemAvatar>
                                     <Avatar src={product.icon} />
                                 </ListItemAvatar>
