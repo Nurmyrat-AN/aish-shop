@@ -295,7 +295,7 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
                     {stateLoading.loading ? <Loading /> : <RetryButton onClick={() => setRetry(retry => retry + 1)} />}
                 </Grid> : null}
             </Grid>
-            {stateLoading.fail || stateLoading.loading || products.length % 50 !== 0 || products.length === 0 || <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}><Button onClick={() => setPage(page => page + 1)} variant='contained' size='small'>Ýene</Button></div>}
+            {stateLoading.fail || stateLoading.loading || products.length === count || products.length === 0 || <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}><Button onClick={() => setPage(page => page + 1)} variant='contained' size='small'>Ýene</Button></div>}
             {stateLoading.fail || stateLoading.loading || <div style={{ background: 'white', textAlign: 'center', position: 'sticky', bottom: 0 }}><Typography variant='caption' >{`JEMI: ${count}`}</Typography></div>}
         </>
     )
