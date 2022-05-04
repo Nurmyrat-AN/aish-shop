@@ -1,4 +1,6 @@
-import { AppBar, Tabs, Tab } from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
