@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import { Button } from '@mui/material'
 
 export const Loading = () => <div>Loading...</div>
 

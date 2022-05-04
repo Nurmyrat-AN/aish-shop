@@ -70,7 +70,7 @@ const AddProduct: React.FC<Props> = (props) => {
             open
             maxWidth='md'
             onClose={() => props.onClose()}>
-            <DialogTitle><ServerData type='category' id={state.category || 0}>{category.name}</ServerData></DialogTitle>
+            <DialogTitle><ServerData type='category' id={state.category || 0}>{category?.name || 'Haryt'}</ServerData></DialogTitle>
             <DialogContent style={{ width: 500 }}>
                 {stateLoading.loading ? <Loading /> : stateLoading.fail ? <RetryButton onClick={() => setRetry(retry => retry + 1)} /> : <List>
                     <ListItem>

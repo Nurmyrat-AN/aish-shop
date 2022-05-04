@@ -1,5 +1,5 @@
-import { DeleteOutline } from "@mui/icons-material";
-import { Autocomplete, Avatar, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, TextField } from "@mui/material";
+import { DeleteOutline } from '@mui/icons-material';
+import { Autocomplete, Avatar, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, TextField } from '@mui/material';
 import React from "react";
 import { Loading, RetryButton } from "../../Components/Loading";
 import { ServerData } from "../../Containers/ServerData";

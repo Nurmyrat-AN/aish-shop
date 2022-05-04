@@ -1,5 +1,5 @@
-import { Card, Collapse, List, ListItem, TextField, IconButton, InputAdornment } from "@mui/material";
-import { Language } from "@mui/icons-material";
+import { Card, Collapse, List, ListItem, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Language } from '@mui/icons-material';
 import React from "react";
 import { LanguageTitles, MULTILANGUAGE_VALUE } from "../Project/LanguageReducer";
 
