@@ -42,7 +42,7 @@ app.post(['/:action/:data', '/:action/:data/:id'], async (req, res) => {
             delete: { ...(new MAPPED_DELETE(mapProps)).mapped_data }
         }
         if (routes[action] && routes[action][data]) {
-            res.send(await UTILS.zip(await routes[action][data]()))
+            res.send(req.headers.device === 'mobile-app' ? await routes[action][data]() : await UTILS.zip(await routes[action][data]()))
         } else {
             res.status(404).send('NOT FOUND')
         }
@@ -51,6 +51,8 @@ app.post(['/:action/:data', '/:action/:data/:id'], async (req, res) => {
         res.status(500).send('Something went wrong')
     }
 })
+
+app.get('/test', async (req, res) => res.send(await UTILS.zip({})))
 
 app.post('/aish-shop/import/aish-datas/:shop', async (req, res) => {
     try {

@@ -5,6 +5,7 @@ var db = mysql.createConnection({
     password: 'NuR123nUr!@#',
 
     database: 'aish_shop',
+    charset : 'utf8',
 
     multipleStatements: true
 });

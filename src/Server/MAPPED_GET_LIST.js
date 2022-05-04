@@ -57,7 +57,7 @@ class MAPPED_GET_LIST {
                 
                 `
             return {
-                products: this.sepearateList(await this.UTILS.queryAsync(`${columns} ${sql} ORDER BY ${this.params.order ? `${this.params.order},` : ''} tertip, name, id LIMIT ${(this.params.page || 0) * 50}, 50`)),
+                products: this.sepearateList(await this.UTILS.queryAsync(`${columns} ${sql} ORDER BY ${this.params.order ? `${this.params.order},` : ''} tertip, name, id LIMIT ${(this.params.page || 0) * 50}, 35`)),
                 count: (await this.UTILS.queryAsync(`SELECT COUNT(*) as count ${sql}`))[0].count
             }
         },
