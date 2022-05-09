@@ -1,7 +1,8 @@
 const { v4: uuidv4 } = require('uuid')
 
-const url_IMAGE = 'https://atom.com.tm/atom'
-const root = '/var/www/atom/uploads/'
+const url_IMAGE = 'http://192.168.20.118/atom'
+// const root = '/var/www/atom/uploads/'
+const root = 'C:/AppServ/www/atom/uploads/'
 
 const isObject = data => typeof data === 'object' && data !== null && data !== undefined
 
@@ -22,20 +23,22 @@ const SEPERATOR = data => {
 }
 
 const ADD_IMAGE_HOST = data => {
-    // Object.keys(data || {}).forEach(key => {
-    //     if (isObject(data[key])) {
-    //         data[key] = ADD_IMAGE_HOST(data[key])
-    //     } else if (typeof data[key] === 'string' && data[key].includes('/uploads/images/')) data[key] = `${url_IMAGE}${data[key]}`
-    // })
+    if (root === '/var/www/atom/uploads/') return data
+    Object.keys(data || {}).forEach(key => {
+        if (isObject(data[key])) {
+            data[key] = ADD_IMAGE_HOST(data[key])
+        } else if (typeof data[key] === 'string' && data[key].includes('/uploads/images/')) data[key] = `${url_IMAGE}${data[key]}`
+    })
     return data
 }
 
 const REMOVE_IMAGE_HOST = data => {
-    // Object.keys(data).forEach(key => {
-    //     if (isObject(data[key])) {
-    //         data[key] = REMOVE_IMAGE_HOST(data[key])
-    //     } else if (typeof data[key] === 'string' && data[key].includes(url_IMAGE)) data[key] = data[key].slice(url_IMAGE.length)
-    // })
+    if (root === '/var/www/atom/uploads/') return data
+    Object.keys(data).forEach(key => {
+        if (isObject(data[key])) {
+            data[key] = REMOVE_IMAGE_HOST(data[key])
+        } else if (typeof data[key] === 'string' && data[key].includes(url_IMAGE)) data[key] = data[key].slice(url_IMAGE.length)
+    })
     return data
 }
 

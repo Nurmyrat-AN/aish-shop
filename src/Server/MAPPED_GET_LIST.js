@@ -52,12 +52,12 @@ class MAPPED_GET_LIST {
                     OR
                     JSON_SEARCH(LOWER(name_lng), 'all','%${this.replaceSpaceToQuery(this.params.search.toLowerCase())}')
                     )` : ''}
-                ${(this.params.groups || []).length > 0 ? `AND JSON_OVERLAPS(topar, '${JSON.stringify(this.params.groups || [])}')` : ''}
+                ${(this.params.groups || []).length > 0 ? `AND JSON_OVERLAPS(groups_base, '${JSON.stringify(this.params.groups || [])}')` : ''}
                 ${this.params.withData ? `AND data.isactive='active'` : ''}
                 
                 `
             return {
-                products: this.sepearateList(await this.UTILS.queryAsync(`${columns} ${sql} ORDER BY ${this.params.order ? `${this.params.order},` : ''} tertip, name, id LIMIT ${(this.params.page || 0) * 50}, 35`)),
+                products: this.sepearateList(await this.UTILS.queryAsync(`${columns} ${sql} ORDER BY ${this.params.order ? `${this.params.order},` : ''} tertip, name, id LIMIT ${(this.params.page || 0) * 10}, 10`)),
                 count: (await this.UTILS.queryAsync(`SELECT COUNT(*) as count ${sql}`))[0].count
             }
         },
@@ -76,36 +76,9 @@ class MAPPED_GET_LIST {
         categoryBrandSupport: async () => ({
             categoryBrandSupport: await this.UTILS.queryAsync(`SELECT * FROM ${this.params.category ? 'brands' : 'categories'} WHERE id IN (SELECT ${this.params.category ? 'brand_id' : 'category_id'} FROM category_brand WHERE ${this.params.category ? 'category_id' : 'brand_id'}=${this.params.category || this.params.brand})`)
         }),
-        home: async () => {
-            const baners = this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM baners ORDER BY tertip, id`))
-            const groups = this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM topar ORDER BY tertip, id`))
-            const home = []
-            const count_between_groups = 5
-
-            groups.forEach((group, index) => {
-                if (index % count_between_groups === 0) {
-                    home.push({
-                        type: 'baner',
-                        data: baners[index / count_between_groups]
-                    })
-                }
-                home.push({
-                    type: 'groups',
-                    data: group
-                })
-            })
-            await Promise.all(home.filter(hItem => hItem.type === 'baner').map(({ data: baner }) => new Promise(async (resolve, reject) => {
-                baner.gallery = await Promise.all(baner.gallery.map(gItem => new Promise(async (resolve, reject) => {
-                    if (gItem.category) gItem.category = this.SEPERATOR((await this.UTILS.queryAsync(`SELECT id, name, name_lng, parent FROM categories WHERE id='${gItem.category.id}'`))[0] || null)
-                    if (gItem.brand) gItem.brand = this.SEPERATOR((await this.UTILS.queryAsync(`SELECT brands.id, (CASE WHEN categories.name IS NULL THEN brands.name ELSE categories.name END) as name, (CASE WHEN categories.name_lng IS NULL THEN brands.name_lng ELSE categories.name_lng END) as name_lng, brands.parent FROM brands LEFT OUTER JOIN categories ON brands.parent=categories.id WHERE brands.id='${gItem.brand.id}'`))[0] || null)
-                    resolve(gItem)
-                })))
-                resolve()
-            })))
-            return {
-                home
-            }
-        },
+        home: async () => ({
+            home: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM home_list WHERE name LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY tertip`))
+        }),
         addresses: async () => ({
             addresses: await this.UTILS.queryAsync(`SELECT * FROM addresses WHERE phone='${this.params.phone}'`)
         }),

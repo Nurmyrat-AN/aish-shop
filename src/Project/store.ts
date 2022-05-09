@@ -10,8 +10,8 @@ import { DataReducer } from "./DataReducer";
 import { DialogsReducer } from "./DialogsReducer";
 import { LanguageReducer } from "./LanguageReducer";
 
-// export const URL_API = 'http://localhost:2022'
-export const URL_API = 'https://api.atom.com.tm'
+export const URL_API = 'http://localhost:2022'
+// export const URL_API = 'https://api.atom.com.tm'
 
 export const getRequestApi = () => new RequestApi()
 
@@ -67,7 +67,7 @@ class RequestApi {
                 responseType: 'blob',
             })
             //@ts-ignore
-            if (!showProgress) store.dispatch(SET_GLOBAL(global => ({ ...global, loading: false })))
+            if (showProgress) store.dispatch(SET_GLOBAL(global => ({ ...global, loading: false })))
             return await ArchiveUtils.unzip(result.data)
         } catch (e) {
             //@ts-ignore

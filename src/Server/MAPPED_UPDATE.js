@@ -25,6 +25,7 @@ class MAPPED_UPDATE {
         currency: () => this.updateData('currencies'),
         baner: () => this.updateData('baners'),
         product: () => this.updateData('products'),
+        home: () => this.updateData('home_list'),
         client: async () => {
             await this.UTILS.queryAsync(`INSERT INTO clients(phone, name)VALUES('${this.id}', ${this.UTILS.db.escape(this.params.name)})
                 ON DUPLICATE KEY UPDATE ${this.getKeys(this.STRINGIFYER(this.params))}

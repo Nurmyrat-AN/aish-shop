@@ -10,6 +10,7 @@ class MAPPED_GET {
         brand: async () => this.SEPERATOR((await this.UTILS.queryAsync(`SELECT * FROM brands WHERE id=${this.params.id}`))[0]),
         group: async () => this.SEPERATOR((await this.UTILS.queryAsync(`SELECT * FROM topar WHERE id=${this.params.id}`))[0]),
         baner: async () => this.SEPERATOR((await this.UTILS.queryAsync(`SELECT * FROM baners WHERE id=${this.params.id}`))[0]),
+        home: async () => this.SEPERATOR((await this.UTILS.queryAsync(`SELECT * FROM home_list WHERE id=${this.params.id}`))[0]),
         currency: async () => this.SEPERATOR((await this.UTILS.queryAsync(`SELECT * FROM currencies WHERE id='${this.params.id}'`))[0]),
         productdata: async () => this.SEPERATOR((await this.UTILS.queryAsync(`SELECT *, ((SELECT kurs FROM currencies WHERE id=datas.currency) OR 1) kurs FROM datas WHERE id='${this.params.id}'`))[0]),
         client: async () => ({ client: this.SEPERATOR((await this.UTILS.queryAsync(`SELECT * FROM clients WHERE phone='${this.params.phone}'`))[0] || { phone: this.params.phone, name: '' }) }),

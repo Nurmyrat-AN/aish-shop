@@ -23,6 +23,7 @@ class MAPPED_INSERT {
         currency: () => this.insertData('currencies'),
         baner: () => this.insertData('baners'),
         address: () => this.insertData('addresses'),
+        home: () => this.insertData('home_list'),
         order: async () => {
             const { information, products } = this.params
             const result = await this.UTILS.queryAsync(`INSERT INTO orders(${this.dataKeys(information)})VALUES(${this.dataValues(this.STRINGIFYER(information))})`)

@@ -6,20 +6,18 @@ import Header from './Components/Header';
 import { Loading } from './Components/Loading';
 import { useAppSelector } from './Project/store';
 const Products = React.lazy(() => import('./Pages/Products'))
-const Groups = React.lazy(() => import('./Pages/Groups'))
 const Currencies = React.lazy(() => import('./Pages/Currencies'))
-const Baners = React.lazy(() => import('./Pages/Baners'))
+const HomePage = React.lazy(() => import('./Pages/HomePage'))
 
 type Props = {}
-const App: React.FC<Props> = (props) => {
+const App: React.FC<Props> = () => {
 
   return (
     <React.Suspense fallback={<Loading />}>
       <Header />
       <Switch>
-        <Route path='/groups' component={Groups} />
         <Route path='/currencies' component={Currencies} />
-        <Route path='/baners' component={Baners} />
+        <Route path='/homepage' component={HomePage} />
         <Route path='/' component={Products} />
       </Switch>
       <AppLoader />

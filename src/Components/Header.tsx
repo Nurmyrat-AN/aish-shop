@@ -17,9 +17,8 @@ const Header: React.FC<Props> = () => {
         <AppBar position='sticky' color='transparent' style={{ background: 'white' }}>
             <Tabs value={location.pathname} onChange={handleTabChange}>
                 <Tab value={'/'} label='Harytlar' />
-                <Tab value={'/groups'} label='Toparlar' />
                 <Tab value={'/currencies'} label='Walýutalar' />
-                <Tab value={'/baners'} label='Banerler' />
+                <Tab value={'/homepage'} label='Baş sahypa' />
             </Tabs>
         </AppBar>
     )
