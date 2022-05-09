@@ -240,6 +240,7 @@ const Brands: React.FC<{ currentCategory: number, handleCategoryBrandSupport: Ha
 
 const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBrand: number | null, search: string, handleAdd: (type: EditDialogTypes, id: number | null) => void }> = (props) => {
     const products = useAppSelector(state => state.DATA_LIST.products)
+    const refScroll = React.useRef(null)
     const dispatch = useAppDispatch()
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
     const [retry, setRetry] = React.useState<number>(0)
@@ -265,6 +266,26 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
     }, [props.currentCategory, retry, props.retry, props.currentBrand, props.search, page, dispatch])
 
     React.useEffect(() => setPage(0), [props.currentCategory, props.search, props.currentBrand])
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            if (refScroll.current) {
+                //@ts-ignore
+                const rect = refScroll.current.getBoundingClientRect()
+                if (window.innerHeight > rect.top && count > products.length && !stateLoading.loading && !stateLoading.fail) {
+                    console.log(Math.ceil(products.length / 10))
+                    setPage(Math.ceil(products.length / 10))
+                }
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        handleScroll()
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+
+    }, [refScroll.current, count > products.length && !stateLoading.loading && !stateLoading.fail])
 
     return (
         <>
@@ -295,7 +316,7 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
                     {stateLoading.loading ? <Loading /> : <RetryButton onClick={() => setRetry(retry => retry + 1)} />}
                 </Grid> : null}
             </Grid>
-            {stateLoading.fail || stateLoading.loading || products.length === count || products.length === 0 || <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}><Button onClick={() => setPage(page => page + 1)} variant='contained' size='small'>Ýene</Button></div>}
+            <div ref={refScroll} />
             {stateLoading.fail || stateLoading.loading || <div style={{ background: 'white', textAlign: 'center', position: 'sticky', bottom: 0 }}><Typography variant='caption' >{`JEMI: ${count}`}</Typography></div>}
         </>
     )
