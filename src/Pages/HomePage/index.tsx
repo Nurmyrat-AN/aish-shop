@@ -38,7 +38,7 @@ const HomePage = () => {
     return (
         <Container>
             <div style={{ marginTop: 10, marginBottom: 10, display: 'flex', alignItems: 'center' }}>
-                <Button onClick={() => setPreview(true)} size='small' variant='outlined' style={{ marginLeft: 10 }}>+</Button>
+                <Button onClick={() => setPreview(true)} size='small' variant='outlined' style={{ marginLeft: 10 }}>PREVIEW</Button>
                 <TextField
                     fullWidth
                     autoComplete='off'
