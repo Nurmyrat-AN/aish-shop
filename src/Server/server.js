@@ -72,7 +72,7 @@ app.post('/aish-shop/import/aish-datas/:shop', async (req, res) => {
 
 })
 
-app.post('/register/client', async (req, res) => {
+app.post('/mobile/register/account/client', async (req, res) => {
     try {
         const { phone } = await UTILS.getRequestData(req)
         res.send(await UTILS.zip({ code: '1234' }))
