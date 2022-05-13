@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid')
 
-const url_IMAGE = 'http://192.168.20.118/atom'
+// const url_IMAGE = 'http://192.168.20.118/atom'
 const root = '/var/www/atom/uploads/'
 // const root = 'C:/AppServ/www/atom/uploads/'
 
