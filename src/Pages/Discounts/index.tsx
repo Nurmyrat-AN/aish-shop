@@ -125,6 +125,7 @@ const EditDiscount: React.FC<{ id: null | number, onClose: (refresh?: boolean) =
             if (timer) clearTimeout(timer)
         }
     }, [props.id, retry])
+    console.log(state)
 
     const handleSave = async () => {
         try {

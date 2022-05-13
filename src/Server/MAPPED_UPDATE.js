@@ -8,7 +8,7 @@ class MAPPED_UPDATE {
     }
 
     getKeys = data => Object.keys(data).reduce((res, key) => `${res}${res ? ',' : ''} ${key}=${typeof data[key] === 'string' ? this.UTILS.db.escape(data[key]) :
-        typeof data[key] === 'object' ? this.UTILS.db.escape(JSON.stringify(data[key])) : data[key]
+        typeof data[key] === 'object' && data[key] !== null ? this.UTILS.db.escape(JSON.stringify(data[key])) : data[key]
         }`, '')
 
     updateData = async table => {
