@@ -128,10 +128,11 @@ const EditDiscount: React.FC<{ id: null | number, onClose: (refresh?: boolean) =
 
     const handleSave = async () => {
         try {
+            const { id, ...data } = state
             if (state.id) {
-                await getRequestApi().update({ path: 'discount', data: state, id: state.id })
+                await getRequestApi().update({ path: 'discount', data, id: state.id, showProgress: true })
             } else {
-                await getRequestApi().insert({ path: 'discount', data: state })
+                await getRequestApi().insert({ path: 'discount', data, showProgress: true })
             }
             props.onClose(true)
         } catch (e) { }
