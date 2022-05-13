@@ -164,7 +164,6 @@ const EditCurrency: React.FC<Props> = (props) => {
                 <Button variant='contained' size='small' color='inherit' onClick={() => setRetry(retry => retry + 1)}>Arassala</Button>
                 <Button variant='contained' size='small' color='primary' onClick={handleSave}>Ýatda sakla</Button>
             </DialogActions>
-
         </Dialog>
     )
 }

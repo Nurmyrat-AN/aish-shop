@@ -3,7 +3,6 @@ import React from 'react'
 import { BanerPropsType } from './types'
 
 const CUSTOM_WITH_BIG_IMAGE: React.FC<BanerPropsType> = props => {
-    console.log(props)
     return (
         <Card>
             <CardMedia

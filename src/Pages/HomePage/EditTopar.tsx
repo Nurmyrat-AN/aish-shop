@@ -43,7 +43,7 @@ export const EditTopar: React.FC<Props> = ({ state, setState }) => {
                 expanded={expand === 'products'}
                 label='Harytlar'
                 setExpanded={() => setExpanded('products')}
-                collapseData={<AsyncAutoCompleteProductMultiple setState={setState} products={state.products || []} onSort={indexes => setState(state => ({ ...state, products: indexes.map(idx => (state.products || [])[idx] || 0) }))} />}
+                collapseData={<AsyncAutoCompleteProductMultiple setState={cb => setState(state => ({ ...state, products: cb(state.products || []) }))} products={state.products || []} onSort={indexes => setState(state => ({ ...state, products: indexes.map(idx => (state.products || [])[idx] || 0) }))} />}
             />
             <CollapseItem
                 expanded={expand === 'category'}

@@ -18,6 +18,7 @@ const Header: React.FC<Props> = () => {
             <Tabs value={location.pathname} onChange={handleTabChange}>
                 <Tab value={'/'} label='Harytlar' />
                 <Tab value={'/currencies'} label='Walýutalar' />
+                <Tab value={'/discounts'} label='Arzanladyşlar' />
                 <Tab value={'/homepage'} label='Baş sahypa' />
             </Tabs>
         </AppBar>

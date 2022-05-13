@@ -20,6 +20,7 @@ class MAPPED_UPDATE {
 
     mapped_data = {
         category: () => this.updateData('categories'),
+        discount: () => this.updateData('discounts'),
         brand: () => this.updateData('brands'),
         group: () => this.updateData('topar'),
         currency: () => this.updateData('currencies'),

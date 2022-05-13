@@ -57,6 +57,38 @@ export type ProductType = {
     data?: ProductDataType
 }
 
+export type DiscountActioTypes = 'ADD_PERCENT' | 'REMOVE_PERCENT' | 'ADD_AMOUNT' | 'REMOVE_AMOUNT' | 'EQUAL'
+
+export type DiscountType = {
+    id: number | null
+    name: string
+    actionType: DiscountActioTypes
+    amount: number
+    priority: number
+    category: null | number
+    brand: null | number
+    products: number[]
+}
+
+export const DiscountActionTypeTitles: { [x in DiscountActioTypes]: string } = {
+    ADD_PERCENT: 'Göterim goş',
+    REMOVE_PERCENT: 'Göterim aýyr',
+    ADD_AMOUNT: 'Möçber goş',
+    REMOVE_AMOUNT: 'Möçber aýyr',
+    EQUAL: 'Takyk'
+}
+
+export const emptyDiscount: DiscountType = {
+    id: null,
+    name: '',
+    actionType: 'REMOVE_PERCENT',
+    amount: 0,
+    priority: 0,
+    category: null,
+    brand: null,
+    products: []
+}
+
 export type BanerType = {
     gallery: { src: string, category?: { id: number | null }, brand?: { id: number | null }, product?: { id: number | null }, group?: { id: number | null } }[]
     id: number | null
@@ -73,6 +105,8 @@ export type ProductDataType = {
     currency: string
     isactive: string
     kurs: number
+    used?: number
+    discount: null | { name: string, amount: number, type: DiscountActioTypes }
 }
 
 export enum EditDialogTypes {

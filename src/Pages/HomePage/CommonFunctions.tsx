@@ -5,7 +5,6 @@ import { ServerData } from "../../Containers/ServerData"
 import { getRequestApi, useAppSelector } from "../../Project/store"
 import DragSort from "../../PureComponents/DragSort"
 import { BrandType, CategoryType, ProductType, StateLoadingType } from "../../types"
-import { HomeGroupType } from "./hometypes"
 
 export const AsyncAutoCompleteProduct: React.FC<{ setState: (id: number | null) => void, id: number | null }> = (props) => {
     const [options, setOptions] = React.useState<ProductType[]>([])
@@ -153,7 +152,7 @@ export const AsyncAutoCompleteBrand: React.FC<{ setState: (id: number | null) =>
 
 
 
-export const AsyncAutoCompleteProductMultiple: React.FC<{ setState: (cb: (state: HomeGroupType) => HomeGroupType) => void, products: number[], onSort: (indexes: number[]) => void }> = (props) => {
+export const AsyncAutoCompleteProductMultiple: React.FC<{ setState: (cb: (products: number[]) => number[]) => void, products: number[], onSort: (indexes: number[]) => void }> = (props) => {
     const [options, setOptions] = React.useState<ProductType[]>([])
     const [inputValue, setInputValue] = React.useState<string>('te')
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: false, fail: false })
@@ -172,7 +171,7 @@ export const AsyncAutoCompleteProductMultiple: React.FC<{ setState: (cb: (state:
         }
     }, [inputValue])
 
-
+    debugger
     return (
         <ListItem>
             <div style={{ flexGrow: 1 }}>
@@ -187,7 +186,7 @@ export const AsyncAutoCompleteProductMultiple: React.FC<{ setState: (cb: (state:
                     inputValue={inputValue}
                     multiple
                     renderTags={props => null}
-                    onChange={(e, value) => props.setState(state => ({ ...state, products: [...props.products, ...value.filter(v => !v.id || !props.products.includes(v.id)).map(v => v.id || 0)] }))}
+                    onChange={(e, value) => props.setState(products => [...products, ...value.filter(v => !v.id || !props.products.includes(v.id)).map(v => v.id || 0)])}
                     renderInput={props => <TextField
                         {...props}
                         label='Haryt gözle'
@@ -203,7 +202,7 @@ export const AsyncAutoCompleteProductMultiple: React.FC<{ setState: (cb: (state:
                         <List style={{ flexGrow: 1 }}>
                             <DragSort onChange={props.onSort}>
                                 {props.products.map(id => <ListItem key={id}>
-                                    <ServerData id={id} type='product' dataViaProps><ProductItem id={id} onRemove={id => props.setState(state => ({ ...state, products: (state.products || []).filter(sp => sp !== id) }))} /></ServerData>
+                                    <ServerData id={id} type='product' dataViaProps><ProductItem id={id} onRemove={id => props.setState(products => (products || []).filter(sp => sp !== id))} /></ServerData>
                                 </ListItem>)}
                             </DragSort>
                         </List>

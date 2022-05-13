@@ -246,6 +246,7 @@ const AsyncAutoCompleteDatas: React.FC<{ setState: React.Dispatch<React.SetState
                         size='small'
                         fullWidth
                         loading={stateLoading.loading}
+                        renderOption={(props, option) => <ListItem {...props} key={option.id}><ListItemText primary={option.name} secondary={`Ulanylan haryt sany: ${option.used || 0}`} /></ListItem>}
                         options={options}
                         getOptionLabel={option => option.name}
                         onInputChange={(e, value) => setInputValue(value)}

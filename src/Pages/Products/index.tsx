@@ -15,7 +15,6 @@ import ListItemText from '@mui/material/ListItemText'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Tab from '@mui/material/Tab'
-import Table from '@mui/material/Table'
 import Tabs from '@mui/material/Tabs'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -267,25 +266,27 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
 
     React.useEffect(() => setPage(0), [props.currentCategory, props.search, props.currentBrand])
 
+    const scrollEffect = count > products.length && !stateLoading.loading && !stateLoading.fail
+
     React.useEffect(() => {
         const handleScroll = () => {
             if (refScroll.current) {
                 //@ts-ignore
                 const rect = refScroll.current.getBoundingClientRect()
-                if (window.innerHeight > rect.top && count > products.length && !stateLoading.loading && !stateLoading.fail) {
-                    console.log(Math.ceil(products.length / 10))
+                if (window.innerHeight > rect.top && scrollEffect) {
                     setPage(Math.ceil(products.length / 10))
                 }
             }
         }
-
         window.addEventListener('scroll', handleScroll)
-        handleScroll()
+        let timer: NodeJS.Timeout | null = null
+        timer = setTimeout(handleScroll, 500)
         return () => {
             window.removeEventListener('scroll', handleScroll)
+            if (timer) clearTimeout(timer)
         }
 
-    }, [refScroll.current, count > products.length && !stateLoading.loading && !stateLoading.fail])
+    }, [refScroll.current, scrollEffect, products.length])
 
     return (
         <>
@@ -308,7 +309,7 @@ const ProductsList: React.FC<{ currentCategory: number, retry: number, currentBr
                                 <ListItemAvatar>
                                     <Avatar src={product.icon} />
                                 </ListItemAvatar>
-                                <ListItemText primary={product.name} secondary={`${product.data?.price_base_for_sale || '???'} ${product.data?.currency}`} />
+                                <ListItemText primary={product.name} secondary={`${product.data?.price_base_for_sale || '???'} ${product.data?.currency} ${product.data?.discount ? `(${product.data.discount.name})` : ''}`} />
                             </ListItem>
                         </Grid>
                     </ContextMenuWithChildren>)}

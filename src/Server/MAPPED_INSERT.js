@@ -16,6 +16,7 @@ class MAPPED_INSERT {
 
     mapped_data = {
         category: () => this.insertData('categories'),
+        discount: () => this.insertData('discounts'),
         categoryBrandSupport: () => this.insertData('category_brand'),
         brand: () => this.insertData('brands'),
         product: () => this.insertData('products'),

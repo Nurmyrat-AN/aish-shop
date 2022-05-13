@@ -23,30 +23,16 @@ class MAPPED_GET_LIST {
                                         ${this.params.search ? `name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' ` : '1=1'} ORDER BY tertip, name`))
         }),
         products: async () => {
-            const columns = `SELECT products.*, (CASE WHEN datas.id IS NULL THEN null ELSE JSON_OBJECT(
-                'id', datas.id,
-                'code', datas.code,
-                'name', datas.name,
-                'measure', datas.measure,
-                'price_base_for_sale', datas.price_base_for_sale,
-                'currency', datas.currency,
-                'isactive', datas.isactive,
-                'property_1', datas.property_1,
-                'property_2', datas.property_2,
-                'property_3', datas.property_3,
-                'property_4', datas.property_4,
-                'property_5', datas.property_5,
-                'kurs', (CASE WHEN currencies.kurs IS NULL THEN 1 ELSE currencies.kurs END)
-            )END) as data`
-            const sql = `from products LEFT OUTER JOIN datas on products.uid=datas.id LEFT OUTER JOIN currencies ON datas.currency=currencies.id
+            const columns = `SELECT *`
+            const sql = `from products_view
                 WHERE 
                 ${this.params.category ? `category=${this.params.category}` : '1=1'}
-                ${this.params.ids ? `AND products.id IN (${this.params.ids.reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
+                ${this.params.ids ? `AND id IN (${this.params.ids.reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
                 ${(this.params.categories || []).length > 0 ? `AND category IN (${(await this.getCategoriesID(this.params.categories)).reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
                 ${this.params.brand ? `AND brand=${this.params.brand}` : ''} 
                 ${(this.params.brands || []).length > 0 ? `AND brand IN (${this.params.brands.reduce((res, id) => `${res}${res ? ',' : ''}${id}`, '')})` : ''}
                 ${this.params.search ? `AND (
-                    products.name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' 
+                    name LIKE '%${this.replaceSpaceToQuery(this.params.search)}' 
                     OR 
                     JSON_SEARCH(LOWER(key_words), 'all','%${this.replaceSpaceToQuery(this.params.search.toLowerCase())}')
                     OR
@@ -62,13 +48,13 @@ class MAPPED_GET_LIST {
             }
         },
         productDatas: async () => ({
-            productDatas: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM datas WHERE name LIKE '%${this.params.search || ''}%' LIMIT ${(this.params.page || 0) * 50}, 50`))
+            productDatas: this.sepearateList(await this.UTILS.queryAsync(`SELECT *, (SELECT COUNT(uid) FROM products WHERE uid=datas.id) as used FROM datas WHERE name LIKE '%${this.params.search || ''}%' ORDER BY used LIMIT ${(this.params.page || 0) * 50}, 50`))
         }),
         groups: async () => ({
             groups: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM topar WHERE name LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY tertip, id`))
         }),
-        baners: async () => ({
-            baners: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM baners WHERE name LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY tertip, id`))
+        discounts: async () => ({
+            discounts: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM discounts WHERE name LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY priority, name, id`))
         }),
         currencies: async () => ({
             currencies: await this.UTILS.queryAsync(`SELECT * FROM currencies WHERE id LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY id`)
