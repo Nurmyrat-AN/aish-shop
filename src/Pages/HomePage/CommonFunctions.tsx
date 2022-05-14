@@ -1,5 +1,5 @@
-import { DeleteOutlined } from "@mui/icons-material"
-import { Autocomplete, Avatar, Card, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, TextField } from "@mui/material"
+import { DeleteOutlined, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material"
+import { Autocomplete, Avatar, Card, Collapse, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, TextField } from "@mui/material"
 import React from "react"
 import { ServerData } from "../../Containers/ServerData"
 import { getRequestApi, useAppSelector } from "../../Project/store"
@@ -58,6 +58,7 @@ export const AsyncAutoCompleteProduct: React.FC<{ setState: (id: number | null) 
 export const AsyncAutoCompleteCategory: React.FC<{ setState: (id: number | null) => void, id: number | null }> = (props) => {
     const [options, setOptions] = React.useState<CategoryType[]>([])
     const [inputValue, setInputValue] = React.useState<string>('')
+    const [isExpanded, setExpanded] = React.useState<boolean>(false)
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: false, fail: false })
     const category = useAppSelector(state => state.DATA.category[props.id || 0])
     React.useEffect(() => {
@@ -76,27 +77,30 @@ export const AsyncAutoCompleteCategory: React.FC<{ setState: (id: number | null)
     }, [inputValue])
     return (
         <ListItem>
-            <List component={Card} elevation={5} style={{ flexGrow: 1, background: '#f6f6f6', marginBottom: 25 }}>
+            <List component={Card} style={{ flexGrow: 1, padding: 0 }}>
                 <ServerData type='category' id={props.id || 0}>
                     <ListItem component='div'>
                         <ListItemText primary={category?.name || '???'} />
+                        <ListItemSecondaryAction><IconButton onClick={() => setExpanded(isExpanded => !isExpanded)} size='small'>{isExpanded ? <KeyboardArrowUp fontSize='small' /> : <KeyboardArrowDown fontSize='small' />}</IconButton></ListItemSecondaryAction>
                     </ListItem>
                 </ServerData>
-                <ListItem component='div'>
-                    <Autocomplete
-                        size='small'
-                        fullWidth
-                        loading={stateLoading.loading}
-                        options={options}
-                        getOptionLabel={option => option.name}
-                        onInputChange={(e, value) => setInputValue(value)}
-                        onChange={(e, value) => props.setState(value?.id || null)}
-                        renderInput={props => <TextField
-                            {...props}
-                            label='Kategoriýa gözle'
-                        />}
-                    />
-                </ListItem>
+                <Collapse in={isExpanded}>
+                    <ListItem component='div'>
+                        <Autocomplete
+                            size='small'
+                            fullWidth
+                            loading={stateLoading.loading}
+                            options={options}
+                            getOptionLabel={option => option.name}
+                            onInputChange={(e, value) => setInputValue(value)}
+                            onChange={(e, value) => props.setState(value?.id || null)}
+                            renderInput={props => <TextField
+                                {...props}
+                                label='Kategoriýa gözle'
+                            />}
+                        />
+                    </ListItem>
+                </Collapse>
             </List>
         </ListItem>
     )

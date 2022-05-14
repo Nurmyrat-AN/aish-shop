@@ -80,7 +80,8 @@ class RequestApi {
     getDataList = (props: { path: SERVER_GET_LIST_TYPE, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/list/${props.path}`, data: props.data, showProgress: props.showProgress })
     insert = (props: { path: SERVER_INSERT_TYPE, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/insert/${props.path}`, data: props.data, showProgress: props.showProgress })
     update = (props: { path: SERVER_UPDATE_TYPE, id: number | string, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/update/${props.path}/${props.id}`, data: props.data, showProgress: props.showProgress })
-    delete = (props: { path: SERVER_DELETE_TYPE, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/delete/${props.path}/0`, data: props.data, showProgress: props.showProgress })
+    delete = (props: { path: SERVER_DELETE_TYPE, id: number | string, data: { [x: number | string]: any }, showProgress?: boolean }) => this.request({ path: `/delete/${props.path}/${props.id}`, data: props.data, showProgress: props.showProgress })
+    truncate = (props: { path: SERVER_DELETE_TYPE, showProgress?: boolean }) => this.request({ path: `/truncate/${props.path}`, data: {}, showProgress: props.showProgress })
 
 
 }

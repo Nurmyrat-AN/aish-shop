@@ -13,6 +13,7 @@ const MAPPED_INSERT = require('./MAPPED_INSERT')
 const MAPPED_UPDATE = require('./MAPPED_UPDATE')
 const { SEPERATOR, STRINGIFYER, RecursivelyCheckImages } = require('./COMMON_FUNCTIONS')
 const MAPPED_DELETE = require('./MAPPED_DELETE')
+const MAPPED_TRUNCATE = require('./MAPPED_TRUNCATE')
 
 const UTILS = new Utility(db)
 
@@ -39,7 +40,8 @@ app.post(['/:action/:data', '/:action/:data/:id'], async (req, res) => {
             list: { ...(new MAPPED_GET_LIST(mapProps)).mapped_data },
             insert: { ...(new MAPPED_INSERT(mapProps)).mapped_data },
             update: { ...(new MAPPED_UPDATE(mapProps)).mapped_data },
-            delete: { ...(new MAPPED_DELETE(mapProps)).mapped_data }
+            delete: { ...(new MAPPED_DELETE(mapProps)).mapped_data },
+            truncate: { ...(new MAPPED_TRUNCATE(mapProps)).mapped_data }
         }
         if (routes[action] && routes[action][data]) {
             res.send(req.headers.device === 'mobile-app' ? await routes[action][data]() : await UTILS.zip(await routes[action][data]()))
@@ -58,9 +60,9 @@ app.post('/aish-shop/import/aish-datas/:shop', async (req, res) => {
     try {
         const DATA_KEYS = ['id', 'code', 'name', 'measure', 'price_base_for_sale', 'currency', 'isactive', 'property_1', 'property_2', 'property_3', 'property_4', 'property_5']
 
-        const GET_INSERT_KEYS = DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${key}`, '')
-        const GET_INSERT_VALUES = data => DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${typeof data[key] === 'object' ? db.escape(JSON.stringify(data[key])) : typeof data[key] === 'string' ? db.escape(data[key]) : data[key]}`, '')
-        const GET_UPDATE_KEY_VALUES = data => DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${key}=${typeof data[key] === 'object' ? db.escape(JSON.stringify(data[key])) : typeof data[key] === 'string' ? db.escape(data[key]) : data[key]}`, '')
+        const GET_INSERT_KEYS = DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${key}`, 'shop')
+        const GET_INSERT_VALUES = data => DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${typeof data[key] === 'object' ? db.escape(JSON.stringify(data[key])) : typeof data[key] === 'string' ? db.escape(data[key]) : data[key]}`, `'${req.params.shop}'`)
+        const GET_UPDATE_KEY_VALUES = data => DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${key}=${typeof data[key] === 'object' ? db.escape(JSON.stringify(data[key])) : typeof data[key] === 'string' ? db.escape(data[key]) : data[key]}`, `shop='${req.params.shop}'`)
 
         await Promise.all(req.body.map(data => UTILS.queryAsync(`INSERT INTO datas(${GET_INSERT_KEYS})VALUES(${GET_INSERT_VALUES(data)}) ON DUPLICATE KEY UPDATE ${GET_UPDATE_KEY_VALUES(data)}`)))
 

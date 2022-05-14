@@ -105,7 +105,13 @@ export type ProductDataType = {
     currency: string
     isactive: string
     kurs: number
-    used?: number
+    used: number
+    shop: string
+    property_1: string
+    property_2: string
+    property_3: string
+    property_4: string
+    property_5: string
     discount: null | { name: string, amount: number, type: DiscountActioTypes }
 }
 

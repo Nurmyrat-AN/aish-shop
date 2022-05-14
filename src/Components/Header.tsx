@@ -20,6 +20,7 @@ const Header: React.FC<Props> = () => {
                 <Tab value={'/currencies'} label='Walýutalar' />
                 <Tab value={'/discounts'} label='Arzanladyşlar' />
                 <Tab value={'/homepage'} label='Baş sahypa' />
+                <Tab value={'/productdatas'} label='Haryt maglumatlary' />
             </Tabs>
         </AppBar>
     )

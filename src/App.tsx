@@ -9,6 +9,7 @@ const Products = React.lazy(() => import('./Pages/Products'))
 const Currencies = React.lazy(() => import('./Pages/Currencies'))
 const HomePage = React.lazy(() => import('./Pages/HomePage'))
 const Discounts = React.lazy(() => import('./Pages/Discounts'))
+const ProductDatas = React.lazy(() => import('./Pages/ProductDatas'))
 
 type Props = {}
 const App: React.FC<Props> = () => {
@@ -20,6 +21,7 @@ const App: React.FC<Props> = () => {
         <Route path='/currencies' component={Currencies} />
         <Route path='/discounts' component={Discounts} />
         <Route path='/homepage' component={HomePage} />
+        <Route path='/productdatas' component={ProductDatas} />
         <Route path='/' component={Products} />
       </Switch>
       <AppLoader />

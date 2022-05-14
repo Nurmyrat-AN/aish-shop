@@ -22,16 +22,18 @@ import { getRequestApi, useAppSelector } from '../../Project/store'
 import CustomImagePicker from '../../PureComponents/CustomImagePicker'
 import { MultiLanguageTextField } from '../../PureComponents/MultiLanguageTextField'
 import { emptyProduct, ProductDataType, ProductType, StateLoadingType } from '../../types'
+import { AsyncAutoCompleteCategory } from '../HomePage/CommonFunctions'
 
 type Props = {
     id: number | string | null
+    uid?: string
     parent: number
     onClose: (refresh?: boolean) => void
 }
 
 const AddProduct: React.FC<Props> = (props) => {
     const brands = useAppSelector(state => state.DATA_LIST.brands)
-    const [state, setState] = React.useState<ProductType>({ ...emptyProduct, category: props.parent })
+    const [state, setState] = React.useState<ProductType>({ ...emptyProduct, category: props.parent, uid: props.uid || '' })
     const category = useAppSelector(stateApp => stateApp.DATA.category[state.category || 0])
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
     const [retry, setRetry] = React.useState<number>(0)
@@ -42,7 +44,7 @@ const AddProduct: React.FC<Props> = (props) => {
         let timer: NodeJS.Timeout | null = null
         timer = setTimeout(async () => {
             if (props.id === null) {
-                setState({ ...emptyProduct, category: props.parent })
+                setState({ ...emptyProduct, category: props.parent, uid: props.uid || '' })
                 setStateLoading({ loading: false, fail: false })
             } else {
                 try {
@@ -98,6 +100,7 @@ const AddProduct: React.FC<Props> = (props) => {
                         </ListItemAvatar>
                         <ListItemText style={{ marginLeft: 10 }}><Typography variant='body2'>Ikonkasy</Typography></ListItemText>
                     </ListItem>
+                    <AsyncAutoCompleteCategory id={state.category} setState={category => setState(state => ({ ...state, category }))} />
                     <ListItem>
                         <MultiLanguageTextField
                             label='Ady'
@@ -224,7 +227,7 @@ const AsyncAutoCompleteDatas: React.FC<{ setState: React.Dispatch<React.SetState
         setStateLoading({ loading: true, fail: false })
         timer = setTimeout(async () => {
             try {
-                const { productDatas } = await getRequestApi().getDataList({ path: `productDatas`, data: { search: inputValue } }) as { productDatas: ProductDataType[] }
+                const { productDatas } = await getRequestApi().getDataList({ path: `productDatas`, data: { search: inputValue, countPerPage: 50 } }) as { productDatas: ProductDataType[] }
                 setOptions(productDatas)
             } catch (e) { }
             setStateLoading({ loading: false, fail: false })

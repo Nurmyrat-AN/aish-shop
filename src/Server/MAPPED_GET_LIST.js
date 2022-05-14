@@ -47,9 +47,21 @@ class MAPPED_GET_LIST {
                 count: (await this.UTILS.queryAsync(`SELECT COUNT(*) as count ${sql}`))[0].count
             }
         },
-        productDatas: async () => ({
-            productDatas: this.sepearateList(await this.UTILS.queryAsync(`SELECT *, (SELECT COUNT(uid) FROM products WHERE uid=datas.id) as used FROM datas WHERE name LIKE '%${this.params.search || ''}%' ORDER BY used LIMIT ${(this.params.page || 0) * 50}, 50`))
-        }),
+        productDatas: async () => {
+            const where = `WHERE ${this.params.search ? `name LIKE '%${this.params.search || ''}%'` : ' 1=1 '}
+                            ${this.params.code ? `AND code LIKE '%${this.params.code || ''}%'` : ''}
+                            ${this.params.isactive ? `AND isactive LIKE '%${this.params.isactive || ''}%'` : ''}
+                            ${this.params.property_1 ? `AND property_1 LIKE '%${this.params.property_1 || ''}%'` : ''}
+                            ${this.params.property_2 ? `AND property_2 LIKE '%${this.params.property_2 || ''}%'` : ''}
+                            ${this.params.property_3 ? `AND property_3 LIKE '%${this.params.property_3 || ''}%'` : ''}
+                            ${this.params.property_4 ? `AND property_4 LIKE '%${this.params.property_4 || ''}%'` : ''}
+                            ${this.params.property_5 ? `AND property_5 LIKE '%${this.params.property_5 || ''}%'` : ''}
+                            ${this.params.shop ? `AND shop LIKE '%${this.params.shop || ''}%'` : ''}`
+            return {
+                productDatas: this.sepearateList(await this.UTILS.queryAsync(`SELECT *, (SELECT COUNT(uid) FROM products WHERE uid=datas.id) as used FROM datas ${where} ORDER BY used LIMIT ${(this.params.page || 0) * (this.params.countPerPage || 10)}, ${this.params.countPerPage || 10}`)),
+                count: (await this.UTILS.queryAsync(`SELECT COUNT(*) as count FROM datas ${where}`))[0].count
+            }
+        },
         groups: async () => ({
             groups: this.sepearateList(await this.UTILS.queryAsync(`SELECT * FROM topar WHERE name LIKE '%${this.replaceSpaceToQuery(this.params.search || '')}' ORDER BY tertip, id`))
         }),

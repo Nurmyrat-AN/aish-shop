@@ -53,7 +53,7 @@ const CategoryBrandSupport: React.FC<Props> = (props) => {
 
     const handleDelete = (id: number | null) => {
         if (id) {
-            getRequestApi().delete({ path: 'categoryBrandSupport', data: { category_id: props.data.category || id, brand_id: props.data.brand || id }, showProgress: true }).then(() => setRetry(retry => retry + 1))
+            getRequestApi().delete({ path: 'categoryBrandSupport', id: 0, data: { category_id: props.data.category || id, brand_id: props.data.brand || id }, showProgress: true }).then(() => setRetry(retry => retry + 1))
         }
     }
 
