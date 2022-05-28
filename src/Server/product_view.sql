@@ -5,8 +5,8 @@ SELECT products.*, (CASE WHEN datas.id IS NULL THEN null ELSE JSON_OBJECT(
                                           'measure', datas.measure,
                                           'price_base_for_sale', datas.price_base_for_sale,
                                           'discount', (SELECT JSON_OBJECT('amount', amount, 'type', actionType, 'name', name) FROM discounts WHERE 
-                                                 discounts.category=products.category OR 
-                                                 discounts.brand=products.brand OR 
+                                                 (discounts.category=products.category AND discounts.category!=0) OR 
+                                                 (discounts.brand=products.brand AND discounts.brand!=0) OR 
                                                  JSON_CONTAINS(discounts.products, CONCAT(products.id, ''))
                                                  ORDER BY discounts.priority DESC LIMIT 1),
                                           'currency', datas.currency,

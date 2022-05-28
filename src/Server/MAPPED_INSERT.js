@@ -30,10 +30,10 @@ class MAPPED_INSERT {
             const result = await this.UTILS.queryAsync(`INSERT INTO orders(${this.dataKeys(information)})VALUES(${this.dataValues(this.STRINGIFYER(information))})`)
             const order_id = result.insertId
             try {
-                await Promise.all(products.map((product, idx) => UTILS.queryAsync(`INSERT INTO order_datas(order_id, product)VALUES(${order_id}, ${UTILS.db.escape(JSON.stringify(product))})`)))
+                await Promise.all(products.map((product, idx) => this.UTILS.queryAsync(`INSERT INTO order_datas(order_id, product)VALUES(${order_id}, ${this.UTILS.db.escape(JSON.stringify(product))})`)))
             } catch (e) {
-                await UTILS.queryAsync(`DELETE FROM orders WHERE id=${order_id}`)
-                await UTILS.queryAsync(`DELETE FROM order_datas WHERE order_id=${order_id}`)
+                await this.UTILS.queryAsync(`DELETE FROM orders WHERE id=${order_id}`)
+                await this.UTILS.queryAsync(`DELETE FROM order_datas WHERE order_id=${order_id}`)
                 throw e
             }
             return { result: { status: 'OK', message: 'Saved Successfully' } }

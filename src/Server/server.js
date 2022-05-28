@@ -64,7 +64,10 @@ app.post('/aish-shop/import/aish-datas/:shop', async (req, res) => {
         const GET_INSERT_VALUES = data => DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${typeof data[key] === 'object' ? db.escape(JSON.stringify(data[key])) : typeof data[key] === 'string' ? db.escape(data[key]) : data[key]}`, `'${req.params.shop}'`)
         const GET_UPDATE_KEY_VALUES = data => DATA_KEYS.reduce((res, key) => `${res}${res ? ',' : ''}${key}=${typeof data[key] === 'object' ? db.escape(JSON.stringify(data[key])) : typeof data[key] === 'string' ? db.escape(data[key]) : data[key]}`, `shop='${req.params.shop}'`)
 
-        await Promise.all(req.body.map(data => UTILS.queryAsync(`INSERT INTO datas(${GET_INSERT_KEYS})VALUES(${GET_INSERT_VALUES(data)}) ON DUPLICATE KEY UPDATE ${GET_UPDATE_KEY_VALUES(data)}`)))
+        await Promise.all(req.body.map(data => {
+            data.id = `${req.params.shop}-${data.id}`
+            return UTILS.queryAsync(`INSERT INTO datas(${GET_INSERT_KEYS})VALUES(${GET_INSERT_VALUES(data)}) ON DUPLICATE KEY UPDATE ${GET_UPDATE_KEY_VALUES(data)}`)
+        }))
 
         res.send('OK')
     } catch (e) {

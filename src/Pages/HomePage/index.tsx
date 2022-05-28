@@ -35,6 +35,10 @@ const HomePage = () => {
         }
     }, [search, retry])
 
+    const handleDelete = (id: number) => {
+        getRequestApi().delete({ path: 'homeitem', id, data: {}, showProgress: true }).then(() => setRetry(retry => retry + 1))
+    }
+
     return (
         <Container>
             <div style={{ marginTop: 10, marginBottom: 10, display: 'flex', alignItems: 'center' }}>
@@ -64,7 +68,7 @@ const HomePage = () => {
                         <TableCell align='center' colSpan={4}>
                             {stateLoading.loading ? <Loading /> : stateLoading.fail ? <RetryButton onClick={() => setRetry(retry => retry + 1)} /> : 'Tapylmady!'}
                         </TableCell>
-                    </TableRow> : datas.map(data => <ContextMenuWithChildren key={data.id} options={[{ label: 'Üýtget', onClick: () => setEditData({ id: data.id }) }]}><TableRow>
+                    </TableRow> : datas.map(data => <ContextMenuWithChildren key={data.id} options={[{ label: 'Üýtget', onClick: () => setEditData({ id: data.id }) }, { label: 'Poz', onClick: () => handleDelete(data.id || 0) }]}><TableRow>
                         <TableCell>{data.name}</TableCell>
                         <TableCell>{data.type}</TableCell>
                         <TableCell>{data.template}</TableCell>

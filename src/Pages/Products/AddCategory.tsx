@@ -23,7 +23,7 @@ type Props = {
 }
 
 const AddCategory: React.FC<Props> = (props) => {
-    const [state, setState] = React.useState<CategoryType>(emptyCategory)
+    const [state, setState] = React.useState<CategoryType>({ ...emptyCategory, parent: props.parent })
     const [stateLoading, setStateLoading] = React.useState<StateLoadingType>({ loading: true, fail: false })
     const [retry, setRetry] = React.useState<number>(0)
 
@@ -32,7 +32,7 @@ const AddCategory: React.FC<Props> = (props) => {
         let timer: NodeJS.Timeout | null = null
         timer = setTimeout(async () => {
             if (props.id === null) {
-                setState(emptyCategory)
+                setState({ ...emptyCategory, parent: props.parent })
                 setStateLoading({ loading: false, fail: false })
             } else {
                 try {
@@ -48,7 +48,7 @@ const AddCategory: React.FC<Props> = (props) => {
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [props.id, retry])
+    }, [props.id, retry, props.parent])
 
     const handleSave = async () => {
         if (!state.name) return;
